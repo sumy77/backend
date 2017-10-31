@@ -18,6 +18,18 @@ module.exports = {
 				res.status(200).send({token: createToken(result)});
 			});
 		});
+	},
+	login: function(req, res){
+		User.findOne({email: req.body.email}, function(err, user){
+			if(!user) {
+				return res.status(401).send({message: "Email or password is invalid."});
+			}
+			if(req.body.pwd == user.pwd) {
+				res.send({token: createToken(user)});
+			}else{
+				return res.status(401).send({message: "Invalid email or password"});
+			}
+		});
 	}
 }
 
